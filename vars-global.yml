@@ -6,7 +6,12 @@
 mgmt_network_interface: "eth0"
 data_network_interface: "eth0"
 
+primary_dns_resolver_ip: "10.20.20.53"
+
 common:
+  dns_list:
+    - "{{ primary_dns_resolver_ip }}"
+    - "8.8.8.8"
   yum_lock_timeout: 600
   timezone: "Asia/Seoul"
   profile_name:
@@ -28,7 +33,6 @@ common:
       - "lrzsz"
       - "lsof"
       - "screen"
-      #- "virtualenv"
     CentOS:
       - "epel-release"
       - "bind-utils"
@@ -40,7 +44,6 @@ common:
       - "lrzsz"
       - "lsof"
       - "screen"
-      #- "python-virtualenv"
   firewall:
     force_setup: false
     whitelist:
@@ -90,4 +93,28 @@ mysql_default_file_cnf:
 #############################################
 ####### phpIPAM #############################
 #############################################
+
+phpipam_http_server:
+  name: "phpipam.mgmt.rnd"
+  port: 80
+
+phpipam_git:
+  repo: "https://github.com/phpipam/phpipam.git"
+  dest: "/var/www/html"
+  branch: "1.4"
+
+phpipam_mysql_db:
+  name: "phpipam"
+  host: "localhost"
+  port: 3306
+  user: "phpipam_admin"
+  pass: "changeme@phpipamadmin"
+
+phpipam_enable_network_scanning: true
+
+phpipam_mysql_db_cron_backup:
+  enalbe: true
+  backup_dir: "/home/phpIPAM-MySQL-DB-Backup"
+  mysqldump_bin_path: "/usr/bin/mysqldump"
+  save_days: 14
 

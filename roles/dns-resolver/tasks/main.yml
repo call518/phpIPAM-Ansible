@@ -1,0 +1,18 @@
+---
+# tasks file for dns-resolver
+
+- name: Config DNS-Resolver - /etc/resolv.conf
+  template:
+    src: "etc-resolv.conf.j2"
+    dest: "/etc/resolv.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: yes
+
+- name: Config DNS-Resolver - /etc/sysconfig/network-scripts/ifcfg-eth0
+  replace:
+    path: "/etc/sysconfig/network-scripts/ifcfg-eth0"
+    regexp: "^DNS1=.*"
+    replace: "DNS1={{ primary_dns_resolver_ip }}"
+  when: ansible_distribution == "CentOS"

@@ -1,0 +1,9 @@
+---
+# handlers file for httpd-php
+
+- name: "restart httpd service"
+  systemd:
+    name: "httpd"
+    enabled: yes
+    state: restarted
+

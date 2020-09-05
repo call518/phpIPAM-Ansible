@@ -1,0 +1,48 @@
+---
+# tasks file for httpd-php
+
+- name: Install Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "httpd"
+    - "php"
+    - "php-cli"
+    - "php-gd"
+    - "php-common"
+    - "php-ldap"
+    - "php-pdo"
+    - "php-pear"
+    - "php-snmp"
+    - "php-xml"
+    - "php-mysql"
+    - "php-mbstring"
+#  when: ansible_distribution == "CentOS"
+
+- name: Config HTTPd - /etc/httpd/conf/httpd.conf
+  template:
+    src: "httpd.conf.j2"
+    dest: "/etc/httpd/conf/httpd.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: yes
+  notify: "restart httpd service"
+
+- name: Config Timezone of PHP - /etc/php.ini
+  replace:
+    path: "/etc/php.ini"
+    regexp: "^;date.timezone =.*"
+    replace: "date.timezone = {{ common.timezone }}"
+    backup: yes
+  notify: "restart httpd service"
+
+- meta: flush_handlers
+
+- name: Ensure HTTPd Service
+  systemd:
+    name: "httpd"
+    state: started
+    enabled: yes
+

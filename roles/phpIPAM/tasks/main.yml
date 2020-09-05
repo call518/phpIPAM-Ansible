@@ -1,0 +1,78 @@
+---
+# tasks file for phpIPAM
+
+- name: Install Git
+  yum:
+    name: "git"
+    state: present
+
+- name: Setup System Locales - /etc/environment
+  blockinfile:
+    path: "/etc/environment"
+    block: |
+      LC_ALL=en_US.utf-8
+      LANG=en_US.utf-8
+    owner: "root"
+    group: "root"
+    mode: 0644
+    create: yes
+    state: present
+    marker: "#===== [phpIPAM] ===== ({mark})"
+    marker_begin: "BEGIN"
+    marker_end: "END"
+    backup: yes
+
+- name: Download phpIPAM Installation Files
+  git:
+    repo: "{{ phpipam_git.repo }}"
+    dest: "{{ phpipam_git.dest }}"
+    version: "{{ phpipam_git.branch }}"
+    update: no
+    force: no
+
+- name: Change Ownership phpIPAM Directories/Files
+  file:
+    path: "{{ phpipam_git.dest }}"
+    state: directory
+    recurse: yes
+    owner: "apache"
+    group: "apache"
+
+- name: Change Permission phpIPAM Directories/Files
+  shell: |
+    find {{ phpipam_git.dest }} -type f -exec chmod 0644 {} \;
+    find {{ phpipam_git.dest }} -type d -exec chmod 0755 {} \;
+  args:
+    chdir: "{{ phpipam_git.dest }}"
+    executable: /bin/bash
+    warn: no
+ 
+- name: Config phpIPAM Pre-Install - config.php
+  template:
+    src: "config.php.j2"
+    dest: "{{ phpipam_git.dest }}/config.php"
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: yes
+
+- name: Create Database Backup Directory
+  file:
+    path: "{{ phpipam_mysql_db_cron_backup.backup_dir }}"
+    owner: "root"
+    group: "root"
+    state: directory
+    mode: "0700"
+
+- name: Setup Database Backup Cron Job
+  cron:
+    name: "phpIPAM-MySQL-DB-Backup"
+    cron_file: "phpIPAM-MySQL-DB-Backup"
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "04"
+    minute: "00"
+    user: "root"
+    job: "{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }} -u{{ phpipam_mysql_db.user }} -p{{ phpipam_mysql_db.pass }} {{ phpipam_mysql_db.name }} > {{ phpipam_mysql_db_cron_backup.backup_dir }}/phpipam-backup---$(date +'%Y-%m-%dT%H:%M:%S').db"
+

@@ -1,0 +1,9 @@
+- name: config dns-resolver
+  gather_facts: yes
+  hosts: phpIPAM
+  vars:
+  vars_files:
+    - "vars-global.yml"
+  roles:
+    - dns-resolver
+

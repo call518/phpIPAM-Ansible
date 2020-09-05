@@ -1,0 +1,9 @@
+- name: install HTTPd /w PHP
+  gather_facts: yes
+  hosts: phpIPAM
+  vars:
+  vars_files:
+    - "vars-global.yml"
+  roles:
+    - httpd-php
+
