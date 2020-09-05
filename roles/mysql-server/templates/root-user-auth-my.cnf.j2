@@ -1,0 +1,6 @@
+[client]
+user = {{ mysql_default_file_cnf.user }}
+password = {{ mysql_default_file_cnf.password }}
+host = {{ mysql_default_file_cnf.host }}
+port = {{ mysql_default_file_cnf.port }}
+socket = {{ vars['mysql_socket_path'][ansible_distribution] }}

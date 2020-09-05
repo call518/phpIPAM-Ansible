@@ -1,0 +1,70 @@
+---
+# tasks file for common
+
+- name: remvoe garbage packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+  with_items: "{{ vars['common']['packages_remove'][ansible_distribution] }}"
+
+- name: install common packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+  with_items: "{{ vars['common']['packages_install'][ansible_distribution] }}"
+
+### Tuning Nodes
+# 커널 파라메터 조정.
+- name: config sysctl
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  with_items:
+    - "{{ common.sysctl }}"
+
+# transparent_hugepage 비활성.
+- name: disable transparent_hugepage
+  shell: "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+  args:
+    warn: no
+  become: yes
+
+# 재시작 상황에서도 transparent_hugepage 비활성 자동 적용 처리.
+- name: config disabling transparent_hugepage /etc/rc.d/rc.local
+  blockinfile:
+    path: /etc/rc.d/rc.local
+    block: |
+      echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+- name: change permission /etc/rc.d/rc.local
+  file:
+    path: /etc/rc.d/rc.local
+    mode: 0755
+
+- name: enable rc-local service
+  systemd:
+    name: rc-local
+    state: started
+    enabled: yes
+
+- name: enable NSCD (Name Service Caching Daemon)
+  systemd:
+    name: nscd
+    state: started
+    enabled: yes
+
+# root 자원 제한 조정.
+- name: config ulimit for nofile
+  pam_limits:
+    #domain: '*'
+    domain: "{{ item }}"
+    #limit_type: 'hard'
+    #limit_type: 'soft'
+    limit_type: '-'
+    limit_item: nofile
+    value: "60000"
+    comment: "configured by ansible Live-Lab Playbook"
+  with_items:
+    - "root"

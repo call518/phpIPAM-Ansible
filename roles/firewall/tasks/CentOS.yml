@@ -1,0 +1,51 @@
+---
+# tasks file for firewall
+
+### Set Firewalld (based on iptables)
+
+# firewalld 패키지 설치
+- name: install firewalld
+  yum:
+    name: firewalld
+    state: installed
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+
+# firewalld 서비스 시작
+- name: ensure running of firewall service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+# firewalld 정책 강제(force) 초기화
+- name: reset firewalld
+  shell: "rm -rf /etc/firewalld/zones && cp -r /usr/lib/firewalld/zones /etc/firewalld/zones && firewall-cmd --reload"
+  args:
+    warn: no
+  when: common.firewall.force_setup
+
+# whitelist로 등록된 ip 허용 처리
+- name: set allow whitelist IPs - on All Hosts
+  firewalld:
+    zone: public
+    rich_rule: "rule family='ipv4' source address='{{ item }}' accept"
+    permanent: yes
+    #immediate: yes
+    state: enabled
+  ignore_errors: yes
+  with_items:
+    - "{{ common.firewall.whitelist }}"
+  notify: "reload firewalld service"
+
+# 구성된 클러스터 노드들 상호 허용 처리.
+#- name: set allow all live-lab hosts 
+#  firewalld:
+#    zone: public
+#    rich_rule: "rule family='ipv4' source address='{{ item }}' accept"
+#    permanent: yes
+#    #immediate: yes
+#    state: enabled
+#  with_items:
+#    - "{{ (groups['all'] | map('extract', hostvars, ['ansible_' + mgmt_network_interface, 'ipv4', 'address']) | list | unique) }}"
+#  notify: "reload firewalld service"
+

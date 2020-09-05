@@ -1,0 +1,4 @@
+---
+# tasks file for firewall
+
+- include_tasks: "{{ ansible_distribution }}.yml"

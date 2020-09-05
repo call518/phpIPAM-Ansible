@@ -1,0 +1,13 @@
+---
+# handlers file for firewall
+
+- name: "reload firewalld service"
+  systemd:
+    name: firewalld
+    state: reloaded
+
+- name: "restart ufw service"
+  systemd:
+    name: ufw
+    state: restart
+

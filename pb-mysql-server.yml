@@ -1,0 +1,9 @@
+- name: <PLAYBOOK> setup mysql-server
+  gather_facts: yes
+  hosts: phpIPAM
+  vars_files:
+    - "vars-global.yml"
+  vars:
+  roles:
+    - mysql-server
+

@@ -1,0 +1,56 @@
+---
+# tasks file for firewall
+
+- name: install ufw package
+  apt:
+    name: "ufw"
+    state: present
+
+- name: force reset all rules of ufw
+  ufw:
+    state: reset
+  when: common.firewall.force_setup
+
+- name: enable ufw
+  ufw:
+    state: enabled
+
+- name: allow SSH
+  ufw:
+    rule: "allow"
+    port: "22"
+    proto: "tcp"
+    comment: "Allow SSH(22/TCP) - by Ansible"
+
+- name: allow full-mesh for each other of clsuter members
+#  ufw:
+#    rule: "allow"
+#    src: "{{ item }}"
+#    comment: "Allow Full-Mesh Cluster Members - by Ansible"
+#  with_items: "{{ (groups['all'] | map('extract', hostvars, ['ansible_' + mgmt_network_interface, 'ipv4', 'address']) | list | unique) }}"
+
+- name: allow whitelist IPs
+  ufw:
+    rule: "allow"
+    src: "{{ item }}"
+    comment: "Allow Whitelist IPs - by Ansible"
+  with_items: "{{ common.firewall.whitelist }}"
+
+- name: Setup default policy of iptables-chains
+  ufw:
+    default: "{{ item.default }}"
+    direction: "{{ item.direction }}"
+  with_items:
+    - {
+        default: "deny",
+        direction: "incoming", # Chain: INPUT
+      }
+    - {
+        default: "allow",
+        direction: "outgoing", # Chain: OUTPUT
+      }
+    - {
+        default: "allow",
+        direction: "routed", # Chain: FORWARD
+      }
+

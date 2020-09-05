@@ -1,0 +1,16 @@
+---
+# handlers file for mysql-server
+
+- name: "disable mysql.service in systemd"
+  systemd:
+    name: "mysql"
+    enabled: no
+    daemon_reload: yes
+  ignore_errors: yes
+
+- name: "restart mariadb service"
+  systemd:
+    name: "mariadb"
+    enabled: yes
+    state: restarted
+

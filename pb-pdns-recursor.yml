@@ -1,0 +1,9 @@
+- name: install PowerDNS & PowerDNS-Recursor
+  gather_facts: yes
+  hosts: phpIPAM
+  vars:
+  vars_files:
+    - "vars-global.yml"
+  roles:
+    - pdns-recursor
+

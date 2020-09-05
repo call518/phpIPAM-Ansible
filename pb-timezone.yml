@@ -1,0 +1,13 @@
+# Timezone 조정 -> Asia/Seoul
+- name: <PLAYBOOK> setup timezone ({{ common.timezone }})
+  gather_facts: yes
+  hosts: phpIPAM
+  vars_files:
+    - "vars-global.yml"
+  vars:
+
+  tasks:
+  - name: setup timezone to KST to {{ common.timezone }}
+    timezone:
+      name: "{{ common.timezone }}"
+

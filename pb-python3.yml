@@ -1,0 +1,9 @@
+- name: <PLAYBOOK> install python3 on centos7
+  gather_facts: yes
+  hosts: phpIPAM
+  vars_files:
+    - "vars-global.yml"
+  vars:
+  roles:
+    - python3
+

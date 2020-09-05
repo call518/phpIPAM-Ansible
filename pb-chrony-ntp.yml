@@ -1,0 +1,9 @@
+- name: <PLAYBOOK> configure chrony(NTP)
+  gather_facts: yes
+  hosts: phpIPAM
+  vars_files:
+    - "vars-global.yml"
+  vars:
+  roles:
+    - chrony-ntp
+

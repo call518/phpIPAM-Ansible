@@ -1,0 +1,93 @@
+#######################################
+######### Common ######################
+#######################################
+
+#service_network_interface: "eth0"
+mgmt_network_interface: "eth0"
+data_network_interface: "eth0"
+
+common:
+  yum_lock_timeout: 600
+  timezone: "Asia/Seoul"
+  profile_name:
+    Ubuntu: ".profile"
+    CentOS: ".bash_profile"
+  packages_remove:
+    Ubuntu:
+      - "postfix"
+    CentOS:
+      - "postfix"
+  packages_install:
+    Ubuntu:
+      - "bind9-utils"
+      - "nscd"
+      - "vim"
+      - "tcpdump"
+      - "curl"
+      - "wget"
+      - "lrzsz"
+      - "lsof"
+      - "screen"
+      #- "virtualenv"
+    CentOS:
+      - "epel-release"
+      - "bind-utils"
+      - "nscd"
+      - "vim"
+      - "tcpdump"
+      - "curl"
+      - "wget"
+      - "lrzsz"
+      - "lsof"
+      - "screen"
+      #- "python-virtualenv"
+  firewall:
+    force_setup: false
+    whitelist:
+      - "127.0.0.0/8"
+      - "0.0.0.0/0"		# Allow from All(Any)
+      - "172.31.10.0/24"	# Allow from MGMT
+      - "172.31.50.0/24"	# Allow from DATA
+  ntp:
+    ntp_servers:
+      - "0.centos.pool.ntp.org"
+      - "1.centos.pool.ntp.org"
+      - "2.centos.pool.ntp.org"
+      - "3.centos.pool.ntp.org"
+    allows:
+      - "127.0.0.1"
+      #- "all"
+  sysctl:
+    - { name: "net.core.netdev_max_backlog", value: 65365 }
+    - { name: "net.core.somaxconn", value: 65365 } # up the number of connections per port
+    - { name: "vm.overcommit_memory", value: 1 } # turn on overcommit memory
+    - { name: "vm.swappiness", value: 0 } # turn off swapping
+    - { name: "net.ipv4.tcp_sack", value: 1 } # enable selective acknowledgements
+    - { name: "net.ipv4.tcp_timestamps", value: 1 } # needed for selective acknowledgements
+    - { name: "net.ipv4.tcp_window_scaling", value: 1 } # scale the network window
+    - { name: "net.ipv4.tcp_congestion_control", value: "cubic" } # better congestion algorythm
+    - { name: "net.ipv4.tcp_syncookies", value: 1 } # enable syn cookied
+    - { name: "net.ipv6.conf.all.disable_ipv6", value: 1 } # disable IPv6
+    - { name: "net.ipv6.conf.default.disable_ipv6 = 1", value: 1 } # disable IPv6
+    - { name: "net.ipv6.conf.lo.disable_ipv6 = 1", value: 1 } # disable IPv6
+
+#############################################
+####### MySQL(MariaDB) ######################
+#############################################
+
+mysql_root_pw: "1234"
+mysql_port: 3306
+mysql_socket_path:
+  Ubuntu: "/var/run/mysqld/mysqld.sock"
+  CentOS: "/var/lib/mysql/mysql.sock"
+
+mysql_default_file_cnf:
+  user: "root"
+  password: "{{ mysql_root_pw }}"
+  host: "localhost"
+  port: "{{ mysql_port }}"
+
+#############################################
+####### phpIPAM #############################
+#############################################
+

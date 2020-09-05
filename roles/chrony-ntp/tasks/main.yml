@@ -1,0 +1,47 @@
+---
+# NTP 사용을 위해 Chrony 패키지 설치.
+- name: Install Chrony (Ubuntu)
+  apt:
+    name: "chrony"
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Chrony (CentOS)
+  yum:
+    name: "chrony"
+    state: present
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+  when: ansible_distribution == "CentOS"
+
+# 설정
+- name: Config Chrony (Ubuntu)
+  template:
+    src: "chrony.conf.j2"
+    dest: "/etc/chrony/chrony.conf"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify: Restart Chrony Service
+  when: ansible_distribution == "Ubuntu"
+
+- name: Config Chrony (CentOS)
+  template:
+    src: "chrony.conf.j2"
+    dest: "/etc/chrony.conf"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify: Restart Chrony Service
+  when: ansible_distribution == "CentOS"
+
+- meta: flush_handlers
+
+# 서비스 시작
+- name: Ensure Chrony Service is running
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
+

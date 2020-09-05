@@ -1,0 +1,7 @@
+---
+- name: Restart Chrony Service
+  service: name=chronyd state=restarted
+
+#- name: Restart NTP Service
+#  service: name=ntpd state=restarted
+

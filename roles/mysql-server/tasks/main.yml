@@ -1,0 +1,88 @@
+---
+# tasks file for mysql-server
+
+# Ansible for MySQL 라이브러리 설치
+- name: install python3-pymysql for ansible+msyql (Ubuntu)
+  apt:
+    name: "python3-pymysql"
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: install python3-pymysql for ansible+msyql (CentOS)
+  yum:
+    name: "MySQL-python"
+    state: present
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+  when: ansible_distribution == "CentOS"
+
+# MySQL(MariaDB) 패키지 설치
+- name: install maraidb-server (Ubuntu)
+  apt:
+    name: "mariadb-server"
+    state: present
+  notify: "disable mysql.service in systemd"
+  when: ansible_distribution == "Ubuntu"
+
+- name: install maraidb-server (CentOS)
+  yum:
+    name: "mariadb-server"
+    state: present
+    lock_timeout: "{{ common.yum_lock_timeout }}"
+  notify: "disable mysql.service in systemd"
+  when: ansible_distribution == "CentOS"
+
+- name: Ensure MySQL(MariaDB) Service
+  systemd:
+    name: "mariadb"
+    state: started
+    enabled: yes
+
+# DB root 유저 비밀번호 구성이 수행되었는지 검사.
+- name: check set password for mysql root user
+  stat:
+    path: "/root/.my.cnf"
+  register: _check_root_user_login
+
+# root 비번 미구성시, mysql_secure_installation 수행.
+- name: Apply mysql_secure_installation
+  mysql_secure_installation:
+    hosts: ['localhost', '127.0.0.1', '::1']
+    login_password: ""
+    new_password: "{{ mysql_root_pw }}"
+    user: "root"
+    login_host: "localhost"
+    change_root_password: true
+    remove_anonymous_user: true
+    disallow_root_login_remotely: true
+    remove_test_db: true
+  no_log: true
+  when: not _check_root_user_login.stat.exists
+
+## root 비번 미구성시, 지정된 root 비밀번호 설정 적용. (to 'localhost' 호스트)
+#- name: first set password for mysql root user
+#  mysql_user:
+#    name: "root"
+#    host: "{{ item.host }}"
+#    password: "{{ mysql_root_pw }}"
+#    #priv: "*.*:ALL,GRANT"
+#    #append_privs: yes
+#    #host_all: yes
+#    #check_implicit_admin: yes
+#    login_host: "{{ item.login_host }}"
+#    login_user: "{{ item.login_user }}"
+#    login_password: "{{ item.login_password }}"
+#    #login_unix_socket: "{{ vars['mysql_socket_path'][ansible_distribution] }}"
+#  with_items:
+#    - { host: "localhost", login_host: "localhost", login_user: "root", login_password: "" }
+#  when: not _check_root_user_login.stat.exists
+
+# root 사용자 접속 정보 파일 생성 (/root/.my.cnf)
+- name: install /root/.my.cnf for login mysql root user
+  template:
+    src: "root-user-auth-my.cnf.j2"
+    dest: "/root/.my.cnf"
+    owner: "root"
+    group: "root"
+    mode: 0600
+    backup: yes
+
