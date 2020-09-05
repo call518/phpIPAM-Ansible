@@ -1,8 +1,0 @@
-- name: install Docker-CE
-  hosts: phpIPAM
-  vars:
-  vars_files:
-    - "vars-global.yml"
-  roles:
-    - docker-ce
-
