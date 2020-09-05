@@ -33,6 +33,7 @@ common:
       - "lrzsz"
       - "lsof"
       - "screen"
+      - "fping"
     CentOS:
       - "epel-release"
       - "bind-utils"
@@ -44,6 +45,7 @@ common:
       - "lrzsz"
       - "lsof"
       - "screen"
+      - "fping"
   firewall:
     force_setup: false
     whitelist:
