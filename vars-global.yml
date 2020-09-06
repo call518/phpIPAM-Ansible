@@ -120,3 +120,33 @@ phpipam_mysql_db_cron_backup:
   mysqldump_bin_path: "/usr/bin/mysqldump"
   save_days: 14
 
+
+phpipam_config_php:
+  BASE: "/"
+  ### Mail sending and other parameters for pingCheck and DiscoveryCheck scripts
+  ping_check_send_mail: "false" # true/false, send or not mail on ping check
+  ping_check_method: "fping" # false/ping/pear/fping
+  discovery_check_send_mail: "false" # true/false, send or not mail on discovery check
+  discovery_check_method: "fping" # false/ping/pear/fping
+  removed_addresses_send_mail: "false" # true/false, send or not mail on pomoving inactive addresses
+  removed_addresses_timelimit: "86400 * 7" # int, after how many seconds of inactivity address will be deleted (7 days)
+  resolve_emptyonly: "false" # if true it will only update the ones without DNS entry!
+  resolve_verbose: "false" ## verbose response - prints results, cron will email it to you!
+  ### Etc..
+  debugging: "false"
+  api_allow_unsafe: "false"
+  phpsessname: "phpipamsess"
+  ### Proxy Connection Details
+  proxy_enabled: "false"
+  proxy_server: "myproxy.something.com"
+  proxy_port: 8080
+  proxy_user: "USERNAME"
+  proxy_pass: "PASSWORD"
+  proxy_use_auth: "false"
+  ### General tweaks
+  logo_width: "220"
+  requests_public: "true"
+  split_ip_custom_fields: "false"
+
+
+  

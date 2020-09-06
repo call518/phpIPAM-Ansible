@@ -53,13 +53,13 @@ $db['tmptable_engine_type'] = "MEMORY";
  ******************************/
 
 # pingCheck.php script parameters
-$config['ping_check_send_mail']        = true;       // true/false, send or not mail on ping check
-$config['ping_check_method']           = false;      // false/ping/pear/fping, reset scan method
+$config['ping_check_send_mail']        = {{ phpipam_config_php.ping_check_send_mail }};       // true/false, send or not mail on ping check
+$config['ping_check_method']           = '{{ phpipam_config_php.ping_check_method }}';      // false/ping/pear/fping, reset scan method
 # discoveryCheck.php script parameters
-$config['discovery_check_send_mail']   = true;       // true/false, send or not mail on discovery check
-$config['discovery_check_method']      = false;      // false/ping/pear/fping, reset scan method
+$config['discovery_check_send_mail']   = {{ phpipam_config_php.discovery_check_send_mail }};       // true/false, send or not mail on discovery check
+$config['discovery_check_method']      = '{{ phpipam_config_php.discovery_check_method }}';      // false/ping/pear/fping, reset scan method
 # remove_offline_addresses.php script parameters
-$config['removed_addresses_send_mail'] = true;       // true/false, send or not mail on pomoving inactive addresses
+$config['removed_addresses_send_mail'] = {{ phpipam_config_php.removed_addresses_send_mail }};       // true/false, send or not mail on pomoving inactive addresses
 $config['removed_addresses_timelimit'] = 86400 * 7;  // int, after how many seconds of inactivity address will be deleted (7 days)
 # resolveIPaddresses.php script parameters
 $config['resolve_emptyonly']           = true;       // if true it will only update the ones without DNS entry!
@@ -72,7 +72,7 @@ $config['resolve_verbose']             = true;       // verbose response - print
  * true  = SHOW all php errors
  * false = HIDE all php errors
  ******************************/
-$debugging = false;
+$debugging = {{ phpipam_config_php.debugging }};
 
 /*
  * API Crypt security provider. "mcrypt" or "openssl"
@@ -87,14 +87,14 @@ $debugging = false;
  *
  * @var bool
  */
-$api_allow_unsafe = false;
+$api_allow_unsafe = {{ phpipam_config_php.api_allow_unsafe }};
 
 /**
  *  manual set session name for auth
  *  increases security
  *  optional
  ******************************/
-$phpsessname = "phpipam";
+$phpsessname = "{{ phpipam_config_php.phpsessname }}";
 
 
 /**
@@ -117,7 +117,7 @@ $session_storage = "files";
  *
  ******************************/
 if(!defined('BASE'))
-define('BASE', "/");
+define('BASE', "{{ phpipam_config_php.BASE }}");
 
 
 /**
@@ -155,19 +155,19 @@ $gmaps_api_geocode_key = "";
 /**
  * proxy connection details
  ******************************/
-$proxy_enabled  = false;                                  // Enable/Disable usage of the Proxy server
-$proxy_server   = 'myproxy.something.com';                // Proxy server FQDN or IP
-$proxy_port     = '8080';                                 // Proxy server port
-$proxy_user     = 'USERNAME';                             // Proxy Username
-$proxy_pass     = 'PASSWORD';                             // Proxy Password
-$proxy_use_auth = false;                                  // Enable/Disable Proxy authentication
+$proxy_enabled  = {{ phpipam_config_php.proxy_enabled }};                                  // Enable/Disable usage of the Proxy server
+$proxy_server   = '{{ phpipam_config_php.proxy_server }}';                // Proxy server FQDN or IP
+$proxy_port     = '{{ phpipam_config_php.proxy_port }}';                                 // Proxy server port
+$proxy_user     = '{{ phpipam_config_php.proxy_user }}';                             // Proxy Username
+$proxy_pass     = '{{ phpipam_config_php.proxy_pass }}';                             // Proxy Password
+$proxy_use_auth = {{ phpipam_config_php.proxy_use_auth }};                                  // Enable/Disable Proxy authentication
 
 /**
  * General tweaks
  ******************************/
-$config['logo_width']             = 220;                    // logo width
-$config['requests_public']        = true;                   // Show IP request module on login page
-$config['split_ip_custom_fields'] = false;                  // Show custom fields in separate table when editing IP address
+$config['logo_width']             = {{ phpipam_config_php.logo_width }};                    // logo width
+$config['requests_public']        = {{ phpipam_config_php.requests_public }};                   // Show IP request module on login page
+$config['split_ip_custom_fields'] = {{ phpipam_config_php.split_ip_custom_fields }};                  // Show custom fields in separate table when editing IP address
 
 /**
  * PHP CLI binary for scanning and network discovery.
@@ -180,6 +180,6 @@ $config['split_ip_custom_fields'] = false;                  // Show custom field
 /**
  * Path to mysqldump binary
  *
- * default: '/usr/bin/mysqldump'
+ * default: '{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }}'
  */
-// $mysqldump_cli_binary = '/usr/bin/mysqldump';
+// $mysqldump_cli_binary = '{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }}';
