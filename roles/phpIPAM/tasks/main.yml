@@ -56,6 +56,30 @@
     mode: 0644
     backup: yes
 
+- name: Setup Auto-Health-Check
+  cron:
+    name: "phpIPAM-Auto-Health-Check"
+    cron_file: "phpIPAM-Auto-Health-Check"
+    weekday: "{{ phpipam_cron.health_check.weekday }}"
+    month: "{{ phpipam_cron.health_check.month }}"
+    day: "{{ phpipam_cron.health_check.day }}"
+    hour: "{{ phpipam_cron.health_check.hour }}"
+    minute: "{{ phpipam_cron.health_check.minute }}"
+    user: "root"
+    job: "{{ phpipam_cron.php_bin_path }} {{ phpipam_git.dest }}/functions/scripts/pingCheck.php"
+
+- name: Setup Auto-Discovery-Check
+  cron:
+    name: "phpIPAM-Auto-Discovery-Check"
+    cron_file: "phpIPAM-Auto-Discovery-Check"
+    weekday: "{{ phpipam_cron.discovery_check.weekday }}"
+    month: "{{ phpipam_cron.discovery_check.month }}"
+    day: "{{ phpipam_cron.discovery_check.day }}"
+    hour: "{{ phpipam_cron.discovery_check.hour }}"
+    minute: "{{ phpipam_cron.discovery_check.minute }}"
+    user: "root"
+    job: "{{ phpipam_cron.php_bin_path }} {{ phpipam_git.dest }}/functions/scripts/discoveryCheck.php"
+
 - name: Create Database Backup Directory
   file:
     path: "{{ phpipam_mysql_db_cron_backup.backup_dir }}"

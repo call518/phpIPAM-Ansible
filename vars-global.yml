@@ -148,5 +148,18 @@ phpipam_config_php:
   requests_public: "true"
   split_ip_custom_fields: "false"
 
+phpipam_cron:
+  php_bin_path: "/usr/bin/php"
+  health_check:
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "*"
+    minute: "*/5"
+  discovery_check:
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "*"
+    minute: "*/5"
 
-  
