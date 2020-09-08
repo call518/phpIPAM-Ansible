@@ -34,6 +34,8 @@ common:
       - "lsof"
       - "screen"
       - "fping"
+      - "netcat"
+      - "telnet"
     CentOS:
       - "epel-release"
       - "bind-utils"
@@ -46,6 +48,8 @@ common:
       - "lsof"
       - "screen"
       - "fping"
+      - "nc"
+      - "telnet"
   firewall:
     force_setup: false
     whitelist:
