@@ -76,9 +76,11 @@ common:
     - { name: "net.ipv4.tcp_window_scaling", value: 1 } # scale the network window
     - { name: "net.ipv4.tcp_congestion_control", value: "cubic" } # better congestion algorythm
     - { name: "net.ipv4.tcp_syncookies", value: 1 } # enable syn cookied
-    - { name: "net.ipv6.conf.all.disable_ipv6", value: 1 } # disable IPv6
-    - { name: "net.ipv6.conf.default.disable_ipv6 = 1", value: 1 } # disable IPv6
-    - { name: "net.ipv6.conf.lo.disable_ipv6 = 1", value: 1 } # disable IPv6
+    #- { name: "net.ipv6.conf.all.disable_ipv6", value: 1 } # disable IPv6
+    #- { name: "net.ipv6.conf.default.disable_ipv6", value: 1 } # disable IPv6
+    #- { name: "net.ipv6.conf.lo.disable_ipv6", value: 1 } # disable IPv6
+    #- { name: "net.ipv4.conf.all.forwarding", value: 0 } # disable IPv6
+    #- { name: "net.ipv4.conf.all.rp_filter", value: 2 } # disable IPv6
 
 #############################################
 ####### MySQL(MariaDB) ######################
