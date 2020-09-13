@@ -98,5 +98,6 @@
     hour: "04"
     minute: "00"
     user: "root"
-    job: "{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }} -u{{ phpipam_mysql_db.user }} -p{{ phpipam_mysql_db.pass }} {{ phpipam_mysql_db.name }} > {{ phpipam_mysql_db_cron_backup.backup_dir }}/phpipam-backup---$(date +'%Y-%m-%dT%H:%M:%S').db"
+    #job: "{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }} -u{{ phpipam_mysql_db.user }} -p{{ phpipam_mysql_db.pass }} {{ phpipam_mysql_db.name }} > {{ phpipam_mysql_db_cron_backup.backup_dir }}/phpipam-backup---$(date +'%Y-%m-%dT%H:%M:%S').db"
+    job: "{{ phpipam_mysql_db_cron_backup.mysqldump_bin_path }} --defaults-file=/root/.my.cnf {{ phpipam_mysql_db.name }} > {{ phpipam_mysql_db_cron_backup.backup_dir }}/phpipam-backup---$(date +'%Y-%m-%dT%H:%M:%S').db"
 
