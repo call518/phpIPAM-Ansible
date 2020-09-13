@@ -108,7 +108,8 @@ phpipam_http_server:
 phpipam_git:
   repo: "https://github.com/phpipam/phpipam.git"
   dest: "/var/www/html"
-  branch: "1.4"
+  #branch: "1.4"
+  branch: "1.4.1"
 
 phpipam_mysql_db:
   name: "phpipam"
