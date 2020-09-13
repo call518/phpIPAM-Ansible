@@ -5,14 +5,12 @@
   yum:
     name: "{{ item }}"
     state: absent
-    lock_timeout: "{{ common.yum_lock_timeout }}"
   with_items: "{{ vars['common']['packages_remove'][ansible_distribution] }}"
 
 - name: install common packages
   yum:
     name: "{{ item }}"
     state: present
-    lock_timeout: "{{ common.yum_lock_timeout }}"
   with_items: "{{ vars['common']['packages_install'][ansible_distribution] }}"
 
 ### Tuning Nodes

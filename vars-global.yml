@@ -12,7 +12,6 @@ common:
   dns_list:
     - "{{ primary_dns_resolver_ip }}"
     - "8.8.8.8"
-  yum_lock_timeout: 600
   timezone: "Asia/Seoul"
   profile_name:
     Ubuntu: ".profile"

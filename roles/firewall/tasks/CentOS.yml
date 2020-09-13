@@ -8,7 +8,6 @@
   yum:
     name: firewalld
     state: installed
-    lock_timeout: "{{ common.yum_lock_timeout }}"
 
 # firewalld 서비스 시작
 - name: ensure running of firewall service

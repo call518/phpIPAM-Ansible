@@ -12,7 +12,6 @@
   yum:
     name: "MySQL-python"
     state: present
-    lock_timeout: "{{ common.yum_lock_timeout }}"
   when: ansible_distribution == "CentOS"
 
 # MySQL(MariaDB) 패키지 설치
@@ -27,7 +26,6 @@
   yum:
     name: "mariadb-server"
     state: present
-    lock_timeout: "{{ common.yum_lock_timeout }}"
   notify: "disable mysql.service in systemd"
   when: ansible_distribution == "CentOS"
 

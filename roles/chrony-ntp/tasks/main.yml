@@ -10,7 +10,6 @@
   yum:
     name: "chrony"
     state: present
-    lock_timeout: "{{ common.yum_lock_timeout }}"
   when: ansible_distribution == "CentOS"
 
 # 설정
