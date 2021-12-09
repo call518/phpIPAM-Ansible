@@ -80,6 +80,18 @@
     user: "root"
     job: "{{ phpipam_cron.php_bin_path }} {{ phpipam_git.dest }}/functions/scripts/discoveryCheck.php"
 
+#- name: Setup Auto-Resolve-Check
+#  cron:
+#    name: "phpIPAM-Auto-Resolve-Check"
+#    cron_file: "phpIPAM-Auto-Resolve-Check"
+#    weekday: "{{ phpipam_cron.resolve_check.weekday }}"
+#    month: "{{ phpipam_cron.resolve_check.month }}"
+#    day: "{{ phpipam_cron.resolve_check.day }}"
+#    hour: "{{ phpipam_cron.resolve_check.hour }}"
+#    minute: "{{ phpipam_cron.resolve_check.minute }}"
+#    user: "root"
+#    job: "{{ phpipam_cron.php_bin_path }} {{ phpipam_git.dest }}/functions/scripts/resolveIPaddresses.php"
+
 - name: Create Database Backup Directory
   file:
     path: "{{ phpipam_mysql_db_cron_backup.backup_dir }}"

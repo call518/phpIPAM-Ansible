@@ -3,15 +3,15 @@
 #######################################
 
 #service_network_interface: "eth0"
-mgmt_network_interface: "eth0"
-data_network_interface: "eth0"
+mgmt_network_interface: "ens192"
+data_network_interface: "ens192"
 
-primary_dns_resolver_ip: "10.20.20.53"
+primary_dns_resolver_ip: "192.168.10.101"
 
 common:
   dns_list:
     - "{{ primary_dns_resolver_ip }}"
-    - "8.8.8.8"
+    - "192.168.21.124"
   timezone: "Asia/Seoul"
   profile_name:
     Ubuntu: ".profile"
@@ -54,14 +54,14 @@ common:
     whitelist:
       - "127.0.0.0/8"
       - "0.0.0.0/0"		# Allow from All(Any)
-      - "172.31.10.0/24"	# Allow from MGMT
-      - "172.31.50.0/24"	# Allow from DATA
+      - "192.168.20.0/23"	# Allow from MGMT
   ntp:
     ntp_servers:
-      - "0.centos.pool.ntp.org"
-      - "1.centos.pool.ntp.org"
-      - "2.centos.pool.ntp.org"
-      - "3.centos.pool.ntp.org"
+      #- "0.centos.pool.ntp.org"
+      #- "1.centos.pool.ntp.org"
+      #- "2.centos.pool.ntp.org"
+      #- "3.centos.pool.ntp.org"
+      - "192.168.21.124"
     allows:
       - "127.0.0.1"
       #- "all"
@@ -75,6 +75,9 @@ common:
     - { name: "net.ipv4.tcp_window_scaling", value: 1 } # scale the network window
     - { name: "net.ipv4.tcp_congestion_control", value: "cubic" } # better congestion algorythm
     - { name: "net.ipv4.tcp_syncookies", value: 1 } # enable syn cookied
+    - { name: "net.ipv4.conf.all.arp_ignore", value: 1 } # Prevent ARP Flux
+    - { name: "net.ipv4.conf.all.arp_announce", value: 2 } # Prevent ARP Flux
+
     #- { name: "net.ipv6.conf.all.disable_ipv6", value: 1 } # disable IPv6
     #- { name: "net.ipv6.conf.default.disable_ipv6", value: 1 } # disable IPv6
     #- { name: "net.ipv6.conf.lo.disable_ipv6", value: 1 } # disable IPv6
@@ -85,7 +88,7 @@ common:
 ####### MySQL(MariaDB) ######################
 #############################################
 
-mysql_root_pw: "1234"
+mysql_root_pw: "changeme!@34"
 mysql_port: 3306
 mysql_socket_path:
   Ubuntu: "/var/run/mysqld/mysqld.sock"
@@ -102,7 +105,7 @@ mysql_default_file_cnf:
 #############################################
 
 phpipam_http_server:
-  name: "phpipam.mgmt.rnd"
+  name: "ipam.dap.lgcns.com"
   port: 80
 
 phpipam_git:
@@ -110,6 +113,7 @@ phpipam_git:
   dest: "/var/www/html"
   #branch: "1.4"
   branch: "1.4.1"
+  #branch: "1.4.4"
 
 phpipam_mysql_db:
   name: "phpipam"
@@ -163,6 +167,12 @@ phpipam_cron:
     hour: "*"
     minute: "*/15"
   discovery_check:
+    weekday: "*"
+    month: "*"
+    day: "*"
+    hour: "*"
+    minute: "*/15"
+  resolve_check:
     weekday: "*"
     month: "*"
     day: "*"
