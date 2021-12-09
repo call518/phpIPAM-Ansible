@@ -172,10 +172,10 @@ phpipam_cron:
     day: "*"
     hour: "*"
     minute: "*/15"
-  resolve_check:
-    weekday: "*"
-    month: "*"
-    day: "*"
-    hour: "*"
-    minute: "*/15"
+#  resolve_check:
+#    weekday: "*"
+#    month: "*"
+#    day: "*"
+#    hour: "*"
+#    minute: "*/15"
 
