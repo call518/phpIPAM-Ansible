@@ -165,17 +165,17 @@ phpipam_cron:
     month: "*"
     day: "*"
     hour: "*"
-    minute: "*/15"
+    minute: "*/5"
   discovery_check:
     weekday: "*"
     month: "*"
     day: "*"
     hour: "*"
-    minute: "*/15"
+    minute: "*/5"
 #  resolve_check:
 #    weekday: "*"
 #    month: "*"
 #    day: "*"
 #    hour: "*"
-#    minute: "*/15"
+#    minute: "*/5"
 

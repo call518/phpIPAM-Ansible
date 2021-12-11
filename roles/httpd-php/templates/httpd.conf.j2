@@ -1,5 +1,5 @@
 ServerRoot "/etc/httpd"
-Listen 80
+Listen {{ ansible_facts[mgmt_network_interface]['ipv4']['address'] }}:80
 Include conf.modules.d/*.conf
 User apache
 Group apache
