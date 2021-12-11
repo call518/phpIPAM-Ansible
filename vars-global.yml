@@ -50,10 +50,10 @@ common:
       - "nc"
       - "telnet"
   firewall:
-    force_setup: false
+    force_setup: true
     whitelist:
       - "127.0.0.0/8"
-      - "0.0.0.0/0"		# Allow from All(Any)
+      #- "0.0.0.0/0"		# Allow from All(Any)
       - "192.168.20.0/23"	# Allow from MGMT
   ntp:
     ntp_servers:
