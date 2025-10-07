@@ -6,6 +6,7 @@ version: '3'
 
 services:
   phpipam-web:
+    container_name: phpipam-web
     # image: phpipam/phpipam-www:latest
     image: phpipam/phpipam-www:v1.7.3
     ports:
@@ -24,6 +25,7 @@ services:
       - phpipam-mariadb
 
   phpipam-cron:
+    container_name: phpipam-cron
     # image: phpipam/phpipam-cron:latest
     image: phpipam/phpipam-cron:v1.7.3
     environment:
@@ -38,6 +40,7 @@ services:
       - phpipam-mariadb
 
   phpipam-mariadb:
+    container_name: phpipam-mariadb
     # image: mariadb:latest
     image: mariadb:12.0.2
     environment:
